@@ -42,10 +42,9 @@ public class MediaBoxProvider: Provider {
     public func fetchMovieDetails(for url: URL) async throws -> Movie {
         let id = url.lastPathComponent
         let respone = try await TMDbAPI.shared.movies.details(forMovie: Int(id) ?? 0)
-        let embedURL = baseURL.appendingPathComponent("embed/tmdb/movie").appendingQueryItem(name: "id", value: id)
-        let vidsrcURL = URL(staticString: "https://v2.vidsrc.me/embed/").appendingPathComponent(id)
 
-        return Movie(title: respone.title, webURL: url, posterURL: respone.posterMediumURL!, sources: [.init(hostURL: embedURL), .init(hostURL: vidsrcURL)])
+
+        return Movie(title: respone.title, webURL: url, posterURL: respone.posterMediumURL!, sources: Self.generateSourcesFor(movieID: Int(id) ?? 0))
 
     }
 
@@ -59,12 +58,8 @@ public class MediaBoxProvider: Provider {
         let seasons = numberOfSeasons.map { seasonNumber -> Season in
             let url = tvShowsURL.appendingPathComponent("\(seasonNumber)")
             let episodes = respone.episodes.filter { $0.season == seasonNumber }.compactMap { episode -> Episode? in
-                let embedURL = baseURL.appendingPathComponent("embed/tmdb/tv")
-                    .appendingQueryItem(name: "id", value: id)
-                    .appendingQueryItem(name: "s", value: episode.season)
-                    .appendingQueryItem(name: "e", value: episode.episode)
-                let vidsrcURL = URL(staticString: "https://v2.vidsrc.me/embed/").appendingPathComponent(id).appendingPathComponent("\(episode.season)-\(episode.episode)")
-                return Episode(number: episode.episode, sources: [.init(hostURL: embedURL), .init(hostURL: vidsrcURL)])
+                let sources = Self.generateSourcesFor(tvShowID: Int(id) ?? 0, seasonNumber: episode.season, episodeNumber: episode.episode)
+                return Episode(number: episode.episode, sources: sources)
             }.sorted()
             return Season(seasonNumber: seasonNumber, webURL: url, episodes: episodes)
         }
@@ -106,7 +101,9 @@ public class MediaBoxProvider: Provider {
     public static func generateSourcesFor(movieID: Int) -> [Source] {
         let embedURL = URL(staticString: "https://2embed.to").appendingPathComponent("embed/tmdb/movie").appendingQueryItem(name: "id", value: movieID)
         let vidsrcURL = URL(staticString: "https://v2.vidsrc.me/embed/").appendingPathComponent(movieID)
-        return [.init(hostURL: embedURL), .init(hostURL: vidsrcURL)]
+        let olgPlayURL = URL(staticString: "https://olgply.xyz/").appendingPathComponent(movieID)
+
+        return [.init(hostURL: embedURL), .init(hostURL: vidsrcURL), .init(hostURL: olgPlayURL)]
     }
 
     public static func generateSourcesFor(tvShowID: Int, seasonNumber: Int, episodeNumber: Int) -> [Source] {
@@ -115,7 +112,9 @@ public class MediaBoxProvider: Provider {
             .appendingQueryItem(name: "s", value: seasonNumber)
             .appendingQueryItem(name: "e", value: episodeNumber)
         let vidsrcURL = URL(staticString: "https://v2.vidsrc.me/embed/").appendingPathComponent(tvShowID).appendingPathComponent("\(seasonNumber)-\(episodeNumber)")
-        return [.init(hostURL: embedURL), .init(hostURL: vidsrcURL)]
+        let olgPlayURL = URL(staticString: "https://olgply.xyz/").appendingPathComponent(tvShowID).appendingPathComponent(seasonNumber).appendingPathComponent(episodeNumber)
+
+        return [.init(hostURL: embedURL), .init(hostURL: vidsrcURL), .init(hostURL: olgPlayURL)]
     }
     private func requestPage(path: String, type: String, sort: String, page: Int) async throws -> [MediaBoxMediaContent] {
         let params = [
