@@ -60,9 +60,11 @@ public struct MoviesDetailsView: View {
         .sheet(item: $selectedStream) { stream in
             if let stream = stream {
                 let player = HeadersAVPlayer(stream: stream)
-                _ = player.play()
                 VideoPlayer(player: player)
                     .edgesIgnoringSafeArea(.all)
+                    .onAppear{
+                        player.play()
+                    }
             } else {
                 Text("Stream failed")
             }
