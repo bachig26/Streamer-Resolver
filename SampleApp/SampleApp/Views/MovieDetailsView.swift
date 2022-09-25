@@ -62,7 +62,7 @@ public struct MoviesDetailsView: View {
                 let player = HeadersAVPlayer(stream: stream)
                 VideoPlayer(player: player)
                     .edgesIgnoringSafeArea(.all)
-                    .onAppear{
+                    .onAppear {
                         player.play()
                     }
             } else {

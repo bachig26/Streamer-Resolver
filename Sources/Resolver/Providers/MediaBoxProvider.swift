@@ -43,7 +43,6 @@ public class MediaBoxProvider: Provider {
         let id = url.lastPathComponent
         let respone = try await TMDbAPI.shared.movies.details(forMovie: Int(id) ?? 0)
 
-
         return Movie(title: respone.title, webURL: url, posterURL: respone.posterMediumURL!, sources: Self.generateSourcesFor(movieID: Int(id) ?? 0))
 
     }
