@@ -11,10 +11,19 @@ public class StreamingCommunityProvider: Provider {
     public let title: String = "StreamingCommunity"
     public let langauge: String = "🇮🇹"
     public var subtitle: String = ""
-    public let moviesURL: URL = URL(staticString: "https://streamingcommunity.blog/film")
-    public let tvShowsURL: URL = URL(staticString: "https://streamingcommunity.blog/serie-tv")
-    public let baseURL = URL(staticString: "https://streamingcommunity.blog")
-    private let homeURL = URL(staticString: "https://streamingcommunity.blog")
+    public var moviesURL: URL {
+        baseURL.appendingPathComponent("film")
+    }
+    public var tvShowsURL: URL {
+        baseURL.appendingPathComponent("serie-tv")
+    }
+    public var baseURL: URL {
+        if let path = UserDefaults.standard.string(forKey: "streamingcommunity_url"), let url = URL(string: path) {
+            return url
+        } else {
+            return URL(staticString: "https://streamingcommunity.tech")
+        }
+    }
     public init() {}
 
     public func parsePage(url: URL) async throws -> [MediaContent] {
@@ -126,7 +135,7 @@ public class StreamingCommunityProvider: Provider {
     }
 
     public func home() async throws -> [MediaContentSection] {
-        return try await parse(url: homeURL).asyncMap { (name, items) -> MediaContentSection in
+        return try await parse(url: baseURL).asyncMap { (name, items) -> MediaContentSection in
             let media = try await items.prefix(5).asyncMap { searchr -> MediaContent in
                 let id = searchr.id
                 let name = searchr.slug

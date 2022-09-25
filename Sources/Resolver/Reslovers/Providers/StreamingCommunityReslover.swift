@@ -12,6 +12,10 @@ struct StreamingCommunityReslover: Resolver {
                                     "streamingcommunity.business", "streamingcommunity.org", "streamingcommunity.best",
                                     "streamingcommunity.agency", "streamingcommunity.blog"]
 
+    func canHandle(url: URL) -> Bool {
+        Self.domains.firstIndex(of: url.host!) != nil || url.host?.contains("streamingcommunity") == true
+    }
+
     func getMediaURL(url: URL) async throws -> [Stream] {
         var headers = [
             "origin": url.host!,
