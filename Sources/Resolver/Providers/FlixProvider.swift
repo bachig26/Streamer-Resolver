@@ -158,7 +158,7 @@ public class FlixProvider: Provider {
         )
 
         do {
-            let data = try JSONDecoder().decode(T.self, from: responseData)
+            let data = try JSONCoder.decoder.decode(T.self, from: responseData)
             return data
         } catch {
             throw FlixProviderError.gqlError(error: error)

@@ -124,7 +124,7 @@ public class MediaBoxProvider: Provider {
             "type": type
         ]
         let data = try await request(path: "\(path)/\(page)", params: params)
-        let media = try? JSONDecoder().decode([MediaBoxMediaContent].self, from: data)
+        let media = try?JSONCoder.decoder.decode([MediaBoxMediaContent].self, from: data)
         return media ?? []
     }
 
@@ -134,7 +134,7 @@ public class MediaBoxProvider: Provider {
             "id": id
         ]
         let data = try await request(path: "show/\(id)", params: params)
-        return try JSONDecoder().decode(MediaBoxEpisodesRespose.self, from: data)
+        return try JSONCoder.decoder.decode(MediaBoxEpisodesRespose.self, from: data)
     }
 
     private func requestDiscover() async throws -> DiscoverResponse {
@@ -142,7 +142,7 @@ public class MediaBoxProvider: Provider {
             "act": "discovers"
         ]
         let data = try await request(path: "discovers", params: params)
-        return try JSONDecoder().decode(DiscoverResponse.self, from: data)
+        return try JSONCoder.decoder.decode(DiscoverResponse.self, from: data)
     }
 
     private func requestSearch(query: String) async throws -> [MediaBoxMediaContent] {
@@ -154,7 +154,7 @@ public class MediaBoxProvider: Provider {
             "q": query
         ]
         let data = try await request(path: "movies/1", params: params)
-        let media = try? JSONDecoder().decode([MediaBoxMediaContent].self, from: data)
+        let media = try? JSONCoder.decoder.decode([MediaBoxMediaContent].self, from: data)
         return media ?? []
     }
 

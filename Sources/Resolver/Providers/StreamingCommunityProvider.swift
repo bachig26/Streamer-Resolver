@@ -48,7 +48,7 @@ public class StreamingCommunityProvider: Provider {
                 let ip = translateip(num: img.proxy_id)
                 let detailURL = baseURL.appendingPathComponent("/api/titles/preview/\(id)")
                 let detailsData = try await Utilities.requestData(url: detailURL, httpMethod: "POST", extraHeaders: ["referer": baseURL.absoluteString])
-                let details = try JSONDecoder().decode(Details.self, from: detailsData)
+                let details = try JSONCoder.decoder.decode(Details.self, from: detailsData)
                 let posterurl = try URL("https://\(ip)/images/\(number)/\(img.url)")
                 let videourl = baseURL.appendingPathComponent("titles/\(id)-\(name)")
                 return MediaContent(title: details.name, webURL: videourl, posterURL: posterurl, type: details.type == "movie" ? .movie : .tvShow, provider: .streamingCommunity)
@@ -59,7 +59,7 @@ public class StreamingCommunityProvider: Provider {
         let content = try await Utilities.downloadPage(url: url)
         let document = try SwiftSoup.parse(content)
         let films = try document.select("the-search-page").attr("records-json")
-        let json = try JSONDecoder().decode([Slider].self, from: films.data(using: .utf8)!)
+        let json = try JSONCoder.decoder.decode([Slider].self, from: films.data(using: .utf8)!)
         return [("results", json)]
     }
 
@@ -73,7 +73,7 @@ public class StreamingCommunityProvider: Provider {
                 return nil
             }
             let films = try slider.attr("titles-json")
-            let json = try JSONDecoder().decode([Slider].self, from: films.data(using: .utf8)!)
+            let json = try JSONCoder.decoder.decode([Slider].self, from: films.data(using: .utf8)!)
             return (name, json)
         }
         .compactMap { $0 }
@@ -106,10 +106,10 @@ public class StreamingCommunityProvider: Provider {
         let content = try await Utilities.downloadPage(url: url)
         let document = try SwiftSoup.parse(content)
         let title = try document.select("season-select").attr("title-json")
-        let titleJson = try JSONDecoder().decode(TitleDetails.self, from: title.data(using: .utf8)!)
+        let titleJson = try JSONCoder.decoder.decode(TitleDetails.self, from: title.data(using: .utf8)!)
 
         let details = try document.select("season-select").attr("seasons")
-        let json = try JSONDecoder().decode([SSeason].self, from: details.data(using: .utf8)!)
+        let json = try JSONCoder.decoder.decode([SSeason].self, from: details.data(using: .utf8)!)
         let seasons = json.map { season -> Season in
             let episodes = season.episodes.map {
                 return Episode(number: $0.number, sources: [.init(hostURL: baseURL.appendingPathComponent("/watch/\(season.title_id)").appending("e", value: "\($0.id)"))])
@@ -144,7 +144,7 @@ public class StreamingCommunityProvider: Provider {
                 let ip = translateip(num: img.proxy_id)
                 let detailURL = baseURL.appendingPathComponent("/api/titles/preview/\(id)")
                 let detailsData = try await Utilities.requestData(url: detailURL, httpMethod: "POST", extraHeaders: ["referer": baseURL.absoluteString])
-                let details = try JSONDecoder().decode(Details.self, from: detailsData)
+                let details = try JSONCoder.decoder.decode(Details.self, from: detailsData)
 
                 let posterurl = try URL("https://\(ip)/images/\(number)/\(img.url)")
                 let videourl = baseURL.appendingPathComponent("titles/\(id)-\(name)")

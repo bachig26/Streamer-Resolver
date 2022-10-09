@@ -25,7 +25,7 @@ public class KinokisteProvider: Provider {
 
     public func parsePage(url: URL) async throws -> [MediaContent] {
         let content = try await Utilities.requestData(url: url)
-        let response = try JSONDecoder().decode(KinoResponse.self, from: content)
+        let response = try JSONCoder.decoder.decode(KinoResponse.self, from: content)
         return response.movies.map { movie in
 
             //https://streamcloud.at/{id}/{original_title}/{season}
@@ -52,7 +52,7 @@ public class KinokisteProvider: Provider {
 
         let requestURL = URL(staticString: "https://api.kinokiste.club/data/watch/").appending("_id", value: _id)
         let content = try await Utilities.requestData(url: requestURL)
-        let response = try JSONDecoder().decode(KinoDetails.self, from: content)
+        let response = try JSONCoder.decoder.decode(KinoDetails.self, from: content)
         let sources = response.streams.sorted {
             $0.added > $1.added
         }.prefix(20).compactMap { $0.stream }.map { Source(hostURL: $0)}
@@ -70,7 +70,7 @@ public class KinokisteProvider: Provider {
 
         let requestURL = URL(staticString: "https://api.kinokiste.club/data/watch/").appending("_id", value: _id)
         let content = try await Utilities.requestData(url: requestURL)
-        let response = try JSONDecoder().decode(KinoDetails.self, from: content)
+        let response = try JSONCoder.decoder.decode(KinoDetails.self, from: content)
 
         guard let original_title = url.queryParameters?["title"] else {
             throw KinokisteProvider.idNotFound
@@ -78,7 +78,7 @@ public class KinokisteProvider: Provider {
         let seasonsURL = URL(staticString: "https://api.kinokiste.club/data/seasons/?lang=2").appending("original_title", value: original_title)
         let seasonsData = try await Utilities.requestData(url: seasonsURL)
 
-        let seasonsResponse = try JSONDecoder().decode([KinoDetails].self, from: seasonsData)
+        let seasonsResponse = try JSONCoder.decoder.decode([KinoDetails].self, from: seasonsData)
 
         let seasons = seasonsResponse.map { seasonResponse -> Season in
             let episodesNumber = seasonResponse.streams

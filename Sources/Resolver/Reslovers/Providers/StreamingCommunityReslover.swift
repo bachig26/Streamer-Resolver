@@ -30,11 +30,11 @@ struct StreamingCommunityReslover: Resolver {
         let document = try SwiftSoup.parse(pageContent)
         let rows = try document.select("video-player").attr("response")
         let data = rows.data(using: .utf8)!
-        let response = try JSONDecoder().decode(MediaResponse.self, from: data)
+        let response = try JSONCoder.decoder.decode(MediaResponse.self, from: data)
         let expire = Int(Date().timeIntervalSince1970 + 172800)
 
         let ipData = try await Utilities.requestData(url: .init(string: "https://scws.xyz/videos/\(response.scws_id)")!)
-        let ipResponse = try JSONDecoder().decode(Response.self, from: ipData)
+        let ipResponse = try JSONCoder.decoder.decode(Response.self, from: ipData)
         let uno = "\(expire)\(ipResponse.client_ip) Yc8U6r8KjAKAepEA"
         let token = uno.data(using: .utf8)?.md5().toBase64URL() ?? ""
         let m3umURL = try URL("streamer://scws.xyz/master/\(response.scws_id)?token=\(token)&expires=\(expire)")
