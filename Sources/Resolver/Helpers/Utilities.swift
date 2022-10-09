@@ -33,17 +33,20 @@ public struct Utilities {
                 throw ProviderError.wrongURL
             }
 
-            if data == nil, !parameters.isEmpty {
+            if data == nil{
                 var cs = CharacterSet.urlQueryAllowed
                 cs.remove("+")
                 cs.remove("&")
                 cs.insert("µ")
+
                 components.queryItems = components.queryItems ?? []
                 parameters.forEach { key, value in
                     components.queryItems?.append(URLQueryItem(name: key, value: value))
                 }
-                components.percentEncodedQuery = parameters.compactMap { key, value -> String? in
-                    return "\(key)=\(value)".addingPercentEncoding(withAllowedCharacters: cs)
+
+                components.percentEncodedQuery = components.queryItems?.compactMap { item -> String? in
+                    guard let value = item.value else { return nil }
+                    return "\(item.name)=\(value)".addingPercentEncoding(withAllowedCharacters: cs)
                 }.joined(separator: "&")
 
             }
