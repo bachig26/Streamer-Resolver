@@ -122,6 +122,7 @@ public class KinokisteProvider: Provider {
         var title: String
         var original_title: String?
         var poster_path: String
+        var streams: [KinoStream]
     }
 
     // MARK: - Welcome
