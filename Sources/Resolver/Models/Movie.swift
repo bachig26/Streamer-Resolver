@@ -6,7 +6,7 @@ public struct Movie: Codable, Identifiable, Comparable, Hashable {
     public let webURL: URL
     public let posterURL: URL
     public let sources: [Source]?
-    public let subtitles: [Subtitle]?
+    public var subtitles: [Subtitle]?
 
     public init(title: String, webURL: URL, posterURL: URL, sources: [Source]? = nil, subtitles: [Subtitle]? = nil) {
         self.id = webURL.absoluteString.base64Encoded() ?? ""
