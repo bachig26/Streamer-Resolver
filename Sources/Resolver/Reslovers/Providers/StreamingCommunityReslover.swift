@@ -10,7 +10,7 @@ struct StreamingCommunityReslover: Resolver {
                                     "streamingCommunity.icu", "streamingcommunity.bar", "streamingcommunity.top",
                                     "streamingcommunity.cc", "streamingcommunity.monster", "streamingcommunity.press",
                                     "streamingcommunity.business", "streamingcommunity.org", "streamingcommunity.best",
-                                    "streamingcommunity.agency", "streamingcommunity.blog"]
+                                    "streamingcommunity.agency", "streamingcommunity.help"]
 
     func canHandle(url: URL) -> Bool {
         Self.domains.firstIndex(of: url.host!) != nil || url.host?.contains("streamingcommunity") == true

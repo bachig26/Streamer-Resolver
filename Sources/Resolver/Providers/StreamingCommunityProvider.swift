@@ -21,7 +21,7 @@ public class StreamingCommunityProvider: Provider {
         if let path = UserDefaults.standard.string(forKey: "streamingcommunity_url"), let url = URL(string: path) {
             return url
         } else {
-            return URL(staticString: "https://streamingcommunity.tech")
+            return URL(staticString: "https://streamingcommunity.help")
         }
     }
     public init() {}

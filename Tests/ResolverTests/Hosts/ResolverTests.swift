@@ -92,7 +92,7 @@ class ResolverTests: XCTestCase {
     }
 
     func teststreamingcommunity() async throws {
-        let url = URL(staticString: "https://streamingcommunity.agency/watch/1867")
+        let url = URL(staticString: "https://streamingcommunity.help/watch/1867")
         let streams = try await HostsResolver.resloveURL(url: url)
         XCTAssertNotNil(streams)
         XCTAssertFalse(streams.isEmpty)
