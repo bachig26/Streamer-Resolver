@@ -41,7 +41,26 @@ class VidsrcResolver: Resolver {
 
                 self.startTimer()
 
-                return [.init(reslover: "Vidsrc", streamURL: path)]
+                let headers = [
+                    "Host": path.host ?? "",
+                    "Connection": "keep-alive",
+                    "sec-ch-ua": "\"Google Chrome\";v=\"107\", \"Chromium\";v=\"107\", \"Not=A?Brand\";v=\"24\"",
+                    "DNT": "1",
+                    "sec-ch-ua-mobile": "?0",
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+                    "sec-ch-ua-platform": "\"macOS\"",
+                    "Accept": "*/*",
+                    "Origin": "https://vidsrc.stream",
+                    "Sec-Fetch-Site": "cross-site",
+                    "Sec-Fetch-Mode": "cors",
+                    "Sec-Fetch-Dest": "empty",
+                    "Referer": "https://vidsrc.stream/",
+                    "Accept-Language": "en-US,en;q=0.9,ar;q=0.8",
+                    "sec-fetch-dest": "empty",
+                    "sec-fetch-mode": "cors",
+
+                ]
+                return [.init(reslover: "Vidsrc", streamURL: path, headers: headers)]
             }
         }
         .flatMap { $0 }
@@ -77,18 +96,21 @@ class VidsrcResolver: Resolver {
         let headers = [
             "Host": url.host ?? "",
             "Connection": "keep-alive",
-            "sec-ch-ua": "\"Google Chrome\";v=\"105\", \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"105\"",
-            "Accept": "*/*",
+            "sec-ch-ua": "\"Google Chrome\";v=\"107\", \"Chromium\";v=\"107\", \"Not=A?Brand\";v=\"24\"",
             "DNT": "1",
             "sec-ch-ua-mobile": "?0",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
             "sec-ch-ua-platform": "\"macOS\"",
+            "Accept": "*/*",
             "Origin": "https://vidsrc.stream",
-            "Sec-Fetch-Site": "same-site",
+            "Sec-Fetch-Site": "cross-site",
             "Sec-Fetch-Mode": "cors",
             "Sec-Fetch-Dest": "empty",
             "Referer": "https://vidsrc.stream/",
-            "Accept-Language": "en-US,en;q=0.9,ar;q=0.8"
+            "Accept-Language": "en-US,en;q=0.9,ar;q=0.8",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+
         ]
         _ = try? await Utilities.requestData(url: url, extraHeaders: headers)
     }
