@@ -7,13 +7,18 @@ public final class JSONCoder {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
-            let encodedDate = try container.decode(String.self)
-
-            guard let date = DateCoder.decode(string: encodedDate) else {
-                throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unsupported date format!")
+            if let encodedStringDate = try? container.decode(String.self) {
+                guard let date = DateCoder.decode(string: encodedStringDate) else {
+                    throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unsupported String date format!")
+                }
+                return date
             }
 
-            return date
+            if let encodedIntDate = try? container.decode(Double.self) {
+                return Date(timeIntervalSince1970: encodedIntDate)
+            }
+
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unsupported String date format!")
         }
         return decoder
     }()

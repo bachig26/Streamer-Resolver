@@ -54,7 +54,7 @@ public class KinokisteProvider: Provider {
         let content = try await Utilities.requestData(url: requestURL)
         let response = try JSONCoder.decoder.decode(KinoDetails.self, from: content)
         let sources = response.streams.sorted {
-            $0.added > $1.added
+            $0.added ?? Date() > $1.added ?? Date()
         }.prefix(20).compactMap { $0.stream }.map { Source(hostURL: $0)}
         let posterURL = posterBaseURL.appendingPathComponent(response.poster_path)
         return Movie(title: response.original_title ?? response.title, webURL: url, posterURL: posterURL, sources: Array(sources))
@@ -78,9 +78,9 @@ public class KinokisteProvider: Provider {
         let seasonsURL = URL(staticString: "https://api.kinokiste.club/data/seasons/?lang=2").appending("original_title", value: original_title)
         let seasonsData = try await Utilities.requestData(url: seasonsURL)
 
-        let seasonsResponse = try JSONCoder.decoder.decode([KinoDetails].self, from: seasonsData)
+        let seasonsResponse = try JSONCoder.decoder.decode(KinoDetailsResponse.self, from: seasonsData)
 
-        let seasons = seasonsResponse.map { seasonResponse -> Season in
+        let seasons = seasonsResponse.movies.map { seasonResponse -> Season in
             let episodesNumber = seasonResponse.streams
                 .compactMap { $0.e }
                 .uniqued()
@@ -122,9 +122,19 @@ public class KinokisteProvider: Provider {
         var title: String
         var original_title: String?
         var poster_path: String
-        var streams: [KinoStream]
+        @FailableDecodableArray var streams: [KinoStream]
     }
 
+
+    struct KinoDetailsResponse : Decodable {
+        @FailableDecodableArray var movies: [KinoDetails]
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            self.movies = try container.decode(FailableDecodableArray<KinoDetails>.self).wrappedValue
+        }
+
+    }
     // MARK: - Welcome
     struct KinoDetails: Decodable {
         var s: Int?
@@ -138,7 +148,7 @@ public class KinokisteProvider: Provider {
     struct KinoStream: Decodable {
         var stream: URL?
         var e: Int?
-        var added: Date
+        var added: Date?
     }
 
 }
