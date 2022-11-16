@@ -2,8 +2,8 @@ import Foundation
 import SwiftSoup
 
 struct AkwamReslover: Resolver {
-    static let domains: [String] = ["akwam.to"]
-    private let baseURL: URL = URL(string: "https://akwam.to/")!
+    static let domains: [String] = ["akwam.us"]
+    private let baseURL: URL = URL(string: "https://akwam.us/")!
 
     enum AkwamResloverError: Error {
         case urlNotValid

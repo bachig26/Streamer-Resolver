@@ -6,14 +6,14 @@ public class AkwamProvider: Provider {
         return Locale(identifier: "ar_SA")
     }
     public var type: ProviderType = .akwam
-    public var title: String = "Akwam.to"
+    public var title: String = "Akwam.us"
     public let langauge: String = "🇸🇦"
     public var subtitle: String = "Arabic content"
 
-    public var moviesURL: URL = URL(staticString: "https://akwam.to/movies")
-    public var tvShowsURL: URL = URL(staticString: "https://akwam.to/series")
-    public var homeURL: URL = URL(staticString: "https://akwam.to/one")
-    public let baseURL: URL = URL(string: "https://akwam.to/")!
+    public var moviesURL: URL = URL(staticString: "https://akwam.us/movies")
+    public var tvShowsURL: URL = URL(staticString: "https://akwam.us/series")
+    public var homeURL: URL = URL(staticString: "https://akwam.us/one")
+    public let baseURL: URL = URL(string: "https://akwam.us/")!
 
     public init() { }
 
