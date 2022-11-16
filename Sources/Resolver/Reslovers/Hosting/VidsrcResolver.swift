@@ -34,6 +34,7 @@ class VidsrcResolver: Resolver {
                 guard let path = allURLs.filter({ $0.pathExtension == "m3u8"}).first else {
                     throw VidsrcResolverrError.videoNotFound
                 }
+                print(allURLs)
                 guard let setPathURL = allURLs.filter({ $0.absoluteString.contains("set_pass.php")}).first else {
                     throw VidsrcResolverrError.videoNotFound
                 }

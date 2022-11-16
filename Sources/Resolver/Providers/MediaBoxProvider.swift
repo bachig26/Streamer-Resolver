@@ -101,8 +101,8 @@ public class MediaBoxProvider: Provider {
         let embedURL = URL(staticString: "https://2embed.to").appendingPathComponent("embed/tmdb/movie").appendingQueryItem(name: "id", value: movieID)
         let vidsrcURL = URL(staticString: "https://v2.vidsrc.me/embed/").appendingPathComponent(movieID)
         let olgPlayURL = URL(staticString: "https://olgply.xyz/").appendingPathComponent(movieID)
-
-        return [.init(hostURL: embedURL), .init(hostURL: vidsrcURL), .init(hostURL: olgPlayURL)]
+        let databasegdriveplayerURL = URL(staticString: "https://databasegdriveplayer.xyz/player.php").appendingQueryItem(name: "tmdb", value: movieID)
+        return [.init(hostURL: embedURL), .init(hostURL: vidsrcURL), .init(hostURL: olgPlayURL), .init(hostURL: databasegdriveplayerURL)]
     }
 
     public static func generateSourcesFor(tvShowID: Int, seasonNumber: Int, episodeNumber: Int) -> [Source] {
@@ -112,8 +112,14 @@ public class MediaBoxProvider: Provider {
             .appendingQueryItem(name: "e", value: episodeNumber)
         let vidsrcURL = URL(staticString: "https://v2.vidsrc.me/embed/").appendingPathComponent(tvShowID).appendingPathComponent("\(seasonNumber)-\(episodeNumber)")
         let olgPlayURL = URL(staticString: "https://olgply.xyz/").appendingPathComponent(tvShowID).appendingPathComponent(seasonNumber).appendingPathComponent(episodeNumber)
+        let databasegdriveplayerURL = URL(staticString: "https://databasegdriveplayer.xyz/player.php?type=series")
+            .appendingQueryItem(name: "tmdb", value: tvShowID)
+            .appendingQueryItem(name: "season", value: seasonNumber)
+            .appendingQueryItem(name: "episode", value: episodeNumber)
 
-        return [.init(hostURL: embedURL), .init(hostURL: vidsrcURL), .init(hostURL: olgPlayURL)]
+
+
+        return [.init(hostURL: embedURL), .init(hostURL: vidsrcURL), .init(hostURL: olgPlayURL), .init(hostURL: databasegdriveplayerURL)]
     }
     private func requestPage(path: String, type: String, sort: String, page: Int) async throws -> [MediaBoxMediaContent] {
         let params = [
