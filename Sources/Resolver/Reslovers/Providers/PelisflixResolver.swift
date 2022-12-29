@@ -2,7 +2,7 @@ import Foundation
 import SwiftSoup
 
 struct PelisflixResolver: Resolver {
-    static let domains: [String] = ["pelisflix.one", "pelisflix.uno", "pelisflix.org"]
+    static let domains: [String] = ["pelisflix.one", "pelisflix.uno", "pelisflix.org", "pelisflix2.tv"]
 
     func getMediaURL(url: URL) async throws -> [Stream] {
         let pageData = try await Utilities.downloadPage(url: url, encoding: .isoLatin1)

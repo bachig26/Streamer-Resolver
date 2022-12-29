@@ -39,7 +39,8 @@ public struct HostsResolver {
         FilemoonResolver(),
         StreamingCommunityReslover(),
         OlgPlayResolver(),
-        DatabasegdriveplayerReslover()
+        DatabasegdriveplayerReslover(),
+        WatchSBResolver()
     ]
     static public func resloveURL(url: URL) async throws -> [Stream] {
         print("🕸", url)

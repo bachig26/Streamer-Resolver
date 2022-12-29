@@ -12,10 +12,10 @@ public class SeriesYonkisProvider: Provider {
     public let langauge: String = "🇪🇸"
     public var subtitle: String = "Spanish content"
 
-    public var moviesURL: URL = URL(staticString: "https://seriesyonkis.io/peliculas/")
-    public var tvShowsURL: URL = URL(staticString: "https://seriesyonkis.io/")
-    public var homeURL: URL = URL(staticString: "https://seriesyonkis.io")
-    public let baseURL: URL = URL(staticString: "https://seriesyonkis.io")
+    public var moviesURL: URL = URL(staticString: "https://seriesyonkis.nu/peliculas/")
+    public var tvShowsURL: URL = URL(staticString: "https://seriesyonkis.nu/")
+    public var homeURL: URL = URL(staticString: "https://seriesyonkis.nu")
+    public let baseURL: URL = URL(staticString: "https://seriesyonkis.nu")
 
     public init() { }
 
@@ -29,7 +29,7 @@ public class SeriesYonkisProvider: Provider {
         return try rows.array().map { row in
             let url = try row.attr("href")
             let title: String = try row.select("h3").text()
-            let posterPath: String = try row.select("img").attr("data-src")
+            let posterPath: String = try row.select("img").attr("src")
             let posterURL = URL(string: "https:"+posterPath)!
             let webURL = URL(string: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
             let type: MediaContent.MediaContentType = url.contains("/movie/") ? .movie :  .tvShow
@@ -49,7 +49,7 @@ public class SeriesYonkisProvider: Provider {
         let pageContent = try await Utilities.downloadPage(url: url)
         let pageDocument = try SwiftSoup.parse(pageContent)
         let title = try pageDocument.select("header .Title").text()
-        let posterPath = try pageDocument.select("header .Image img").attr("data-src")
+        let posterPath = try pageDocument.select("header .Image img").attr("src")
         let posterURL = URL(string: "https:" + posterPath)!
         let path = try pageDocument.select(".TPlayer iframe").attr("src")
         guard let sourceURL = URL(string: path) else {
@@ -63,7 +63,7 @@ public class SeriesYonkisProvider: Provider {
         let pageContent = try await Utilities.downloadPage(url: url)
         let pageDocument = try SwiftSoup.parse(pageContent)
         let title = try pageDocument.select("header .Title").text()
-        let posterPath = try pageDocument.select("header .Image img").attr("data-src")
+        let posterPath = try pageDocument.select("header .Image img").attr("src")
         let posterURL = URL(string: "https:" + posterPath)!
 
         let seasonsRows: Elements = try pageDocument.select(".Wdgt.AABox")
@@ -97,7 +97,7 @@ public class SeriesYonkisProvider: Provider {
 
     }
     public func home() async throws -> [MediaContentSection] {
-        let media = try await parsePage(url: .init(staticString: "https://seriesyonkis.io/mas-vistas/"))
+        let media = try await parsePage(url: .init(staticString: "https://seriesyonkis.nu/mas-vistas/"))
         return [MediaContentSection(title: "Most viewed", media: media)]
     }
 }

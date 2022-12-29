@@ -33,8 +33,8 @@ struct PelisplussResolver: Resolver {
         if url.absoluteString.contains("embed.php") {
             let html = try pageDocument.select(".ODDIV").html()
             let streams = try await Utilities.extractURLs(content: html).asyncMap {
-                return try await HostsResolver.resloveURL(url: $0)
-            }.flatMap { $0 }
+                return try? await HostsResolver.resloveURL(url: $0)
+            }.compactMap { $0 }.flatMap { $0 }
             return streams
         }
 

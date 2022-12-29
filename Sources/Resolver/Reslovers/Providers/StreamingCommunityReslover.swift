@@ -2,7 +2,7 @@ import Foundation
 import SwiftSoup
 
 struct StreamingCommunityReslover: Resolver {
-    static let domains: [String] = ["streamingcommunity.xyz", "streamingcommunity.one", "streamingcommunity.vip",
+    static let domains: [String] = ["streamingcommunity.actor", "streamingcommunity.one", "streamingcommunity.vip",
                                     "streamingcommunity.work", "streamingcommunity.name", "streamingcommunity.video",
                                     "streamingcommunity.live", "streamingcommunity.tv", "streamingcommunity.space",
                                     "streamingcommunity.art", "streamingcommunity.fun", "streamingcommunity.website",

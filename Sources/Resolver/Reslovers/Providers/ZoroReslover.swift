@@ -34,7 +34,7 @@ struct ZoroReslover: Resolver {
         var sources = try await rows.array().asyncMap { row -> Source in
             let id: String = try row.attr("data-id")
             let url = self.baseURL.appendingPathComponent("ajax/v2/episode/sources").appending(["id": id])
-            let data = try await Utilities.requestData(url: url)
+            let data = try await Utilities.requestData(url: url,extraHeaders: ["if-none-match":""])
             let serversResponse = try JSONCoder.decoder.decode(MediaResponse.self, from: data)
             return Source(hostURL: serversResponse.link)
         }

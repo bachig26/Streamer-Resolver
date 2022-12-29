@@ -2,7 +2,7 @@ import Foundation
 import SwiftSoup
 
 struct NuploadResolver: Resolver {
-    static let domains: [String] = ["nupload.xyz", "nupload.co", "nuuuppp.online"]
+    static let domains: [String] = ["nupload.xyz", "nupload.co", "nuuuppp.online", "nuuuppp.xyz"]
 
     func canHandle(url: URL) -> Bool {
         Self.domains.firstIndex(of: url.host!) != nil || url.host?.contains("nupload") == true
@@ -14,7 +14,7 @@ struct NuploadResolver: Resolver {
         }
         let pageContent = try await Utilities.downloadPage(url: url, parameters: ["h": ""], extraHeaders: [
             "sec-fetch-dest": "iframe",
-            "referer": "https://pelisflix.uno/"
+            "referer": "https://pelisflix2.tv"
         ])
         guard let session = pageContent.matches(for: #"var sesz="(.+?)""#).last,
               let path = pageContent.matches(for: #"file:"(https:\/\/.+?)"\+sesz\+""#).first,

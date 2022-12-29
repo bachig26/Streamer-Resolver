@@ -2,7 +2,7 @@ import Foundation
 import SwiftSoup
 
 struct  SeriesYonkisReslover: Resolver {
-    static let domains: [String] = ["seriesyonkis.io"]
+    static let domains: [String] = ["seriesyonkis.io", "seriesyonkis.nu"]
 
     enum SeriesYonkisResloverError: Error {
         case episodeNotAvailable

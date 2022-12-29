@@ -3,7 +3,12 @@
 import XCTest
 
 class ResolverTests: XCTestCase {
-
+    func testwatchsb() async throws {
+        let url = URL(staticString: "https://watchsb.com/e/51gqx06ybb6u.html")
+        let streams = try await HostsResolver.resloveURL(url: url)
+        XCTAssertNotNil(streams)
+        XCTAssertFalse(streams.isEmpty)
+    }
     func testStreamtape() async throws {
         let url = URL(staticString: "https://streamtape.com/e/lxp6g9QJGwi7XJK")
         let streams = try await HostsResolver.resloveURL(url: url)

@@ -12,10 +12,10 @@ public class PelisflixProvider: Provider {
     public let langauge: String = "🇪🇸"
     public var subtitle: String = "Spanish content"
 
-    public var moviesURL: URL = URL(staticString: "https://pelisflix.uno/peliculas-online/")
-    public var tvShowsURL: URL = URL(staticString: "https://pelisflix.uno/series-online/")
-    public var homeURL: URL = URL(staticString: "https://pelisflix.uno")
-    public let baseURL: URL = URL(staticString: "https://pelisflix.uno")
+    public var moviesURL: URL = URL(staticString: "https://pelisflix2.tv/peliculas-online/")
+    public var tvShowsURL: URL = URL(staticString: "https://pelisflix2.tv/series-online/")
+    public var homeURL: URL = URL(staticString: "https://pelisflix2.tv")
+    public let baseURL: URL = URL(staticString: "https://pelisflix2.tv")
 
     public init() { }
 
