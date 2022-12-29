@@ -8,6 +8,9 @@ struct AkwamReslover: Resolver {
     enum AkwamResloverError: Error {
         case urlNotValid
     }
+    func canHandle(url: URL) -> Bool {
+        Self.domains.firstIndex(of: url.host!) != nil || url.host?.contains("akwam") == true
+    }
 
     func getMediaURL(url: URL) async throws -> [Stream] {
         let content = try await Utilities.downloadPage(url: url)
